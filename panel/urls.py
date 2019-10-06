@@ -19,5 +19,5 @@ from .views.out_pin import OutPinView
 
 app_name = 'panel'
 urlpatterns = [
-    re_path(r'^out-pin/(\d*)', OutPinView.as_view()),
+    re_path(r'^out-pin/(\w*)$', OutPinView.as_view()),
 ]

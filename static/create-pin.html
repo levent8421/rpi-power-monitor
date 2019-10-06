@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CREATE_PIN</title>
+</head>
+<body>
+<form>
+    <p>
+        <label>name</label>
+        <input type="text" id="name-input">
+    </p>
+    <p>
+        <label>pin num</label>
+        <input type="number" id="pin_num-input">
+    </p>
+    <p>
+        <label>description</label>
+        <input type="text" id="description-input">
+    </p>
+    <p>
+        <button id="btn-create">Create</button>
+    </p>
+</form>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    $('#btn-create').click(function (e) {
+        e.preventDefault();
+        const name = $('#name-input').val();
+        const pinNum = $('#pin_num-input').val();
+        const description = $('#description-input').val();
+
+
+        const postData = JSON.stringify({
+            name: name,
+            pin_num: pinNum,
+            description: description
+        });
+
+        $.ajax({
+            url: '/panel/out-pin/',
+            type: 'put',
+            contentType: 'application/json',
+            data: postData,
+            success: function (res) {
+                if (res.code === 200) {
+                    alert('创建成功[' + res.data.name + ']创建成功!');
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>
