@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from board import gpio
 from commons.view import BaseView
-from panel.models import OutPin
+from panel.models import OutPin, MainPower
 
 
 def check_create_param(param):
@@ -17,20 +17,41 @@ def all_pins(request):
 
 def control_panel(request):
     all_pin = OutPin.objects.all()
+    for pin in all_pin:
+        pin_num = pin.pin_num
+        value = gpio.read_value(pin_num)
+        pin.value = value
     return render(request, 'panel/control-panel.html', {'pins': all_pin})
 
 
-def sync_pins_mode():
+def sync_pins_mode(*args):
     pins = OutPin.objects.all()
     gpio.setup()
     pin_nums = [pin.pin_num for pin in pins]
+    pin_nums.append(MainPower.objects.instance().pin_num)
     gpio.setup_output(pin_nums)
-    return len(pins)
+    return BaseView.ok(data=len(pins))
+
+
+def set_pin_value(request):
+    data = request.data
+    pin_id = data['id']
+    value = data['value']
+    rset = OutPin.objects.filter(id=pin_id)
+    if not len(rset) == 1:
+        return BaseView.not_found(msg='Pin for id not found!')
+    pin = rset[0]
+    gpio.write_value(pin.pin_num, value)
+    return BaseView.ok(data=value)
 
 
 get_handlers = {
     'all': all_pins,
     'panel': control_panel,
+}
+post_handlers = {
+    'sync': sync_pins_mode,
+    'value': set_pin_value,
 }
 
 
@@ -71,8 +92,6 @@ class OutPinView(BaseView):
         return self.ok(data=res)
 
     def post(self, request, operation):
-        if operation == 'sync':
-            size = sync_pins_mode()
-            return self.ok(data=size)
-        else:
-            return self.ok()
+        if operation in post_handlers:
+            return post_handlers[operation](request)
+        return self.bad_request(msg='Unknown operation!')

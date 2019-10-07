@@ -22,3 +22,7 @@ class BaseView(APIView):
     @staticmethod
     def bad_request(msg='Bad Request', data=None):
         return BaseView.json_result(400, msg, data)
+
+    @staticmethod
+    def not_found(msg='Not Found', data=None):
+        return BaseView.json_result(404, msg, data)

@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.urls import re_path
 
+from .views.main_power import MainPowerView
 from .views.out_pin import OutPinView
 
 app_name = 'panel'
 urlpatterns = [
     re_path(r'^out-pin/(\w*)$', OutPinView.as_view()),
+    re_path(r'^main-power/(\w*)$', MainPowerView.as_view()),
 ]

@@ -24,3 +24,13 @@ def read_value(pin):
         print('Read pin value %s, mock True' % pin)
         return True
     return GPIO.input(pin)
+
+
+def write_value(pin, value):
+    if GPIO is None:
+        print('Set pin %s value to %s' % (pin, value))
+        return
+    if value:
+        GPIO.output(pin, GPIO.HIGH)
+    else:
+        GPIO.output(pin, GPIO.LOW)

@@ -5,27 +5,35 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <title>CREATE_PIN</title>
 </head>
 <body>
-<form>
-    <p>
-        <label>name</label>
-        <input type="text" id="name-input">
-    </p>
-    <p>
-        <label>pin num</label>
-        <input type="number" id="pin_num-input">
-    </p>
-    <p>
-        <label>description</label>
-        <input type="text" id="description-input">
-    </p>
-    <p>
-        <button id="btn-create">Create</button>
-    </p>
-</form>
+<div class="container">
+    <h2>Create Sub Pin Switch</h2>
+    <form>
+        <div class="form-group">
+            <label for="name-input">Name</label>
+            <input type="text" class="form-control" id="name-input" placeholder="Name">
+        </div>
+        <div class="form-group">
+            <label for="pin_num-input">Pin Num (BCM)</label>
+            <input type="number" class="form-control" id="pin_num-input" placeholder="Pin Num">
+        </div>
+        <div class="form-group">
+            <label for="description-input">Description</label>
+            <input type="text" class="form-control" id="description-input" placeholder="Description">
+        </div>
+        <button type="submit" id="btn-create" class="btn btn-primary">Create</button>
+    </form>
+</div>
+<div class="alert alert-success" role="alert" id="top-message" style="display: none"></div>
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 <script>
     $('#btn-create').click(function (e) {
         e.preventDefault();
@@ -47,7 +55,12 @@
             data: postData,
             success: function (res) {
                 if (res.code === 200) {
-                    alert('创建成功[' + res.data.name + ']创建成功!');
+                    window.showMessage('Create sub pin switch success!');
+                    setTimeout(function () {
+                        window.location.href = '/panel/out-pin/all';
+                    }, 2000);
+                } else {
+                    window.showMessage('Create sub pin switch error!');
                 }
             }
         })
