@@ -16,7 +16,7 @@ def setup_output(pins):
         print('Set pins [%s] to output!' % pins)
         return
     for pin in pins:
-        GPIO.setup(pin, GPIO.OUTPUT)
+        GPIO.setup(pin, GPIO.OUT)
 
 
 def read_value(pin):
