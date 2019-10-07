@@ -80,10 +80,11 @@ class OutPinView(BaseView):
     def put(self, request, *args):
         request_data = request.data
         name = request_data['name']
-        pin_num = request_data['pin_num']
+        pin_num = int(request_data['pin_num'])
         description = request_data['description']
         res = OutPin.objects.create(name=name, pin_num=pin_num, description=description)
         model_dict = model_to_dict(res)
+        gpio.setup_output([pin_num])
         return self.ok(data=model_dict)
 
     def delete(self, request, delete_id):
