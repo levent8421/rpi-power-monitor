@@ -13,13 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import re_path
+from django.urls import re_path, path
 
 from .views.main_power import MainPowerView
 from .views.out_pin import OutPinView
+from .views.test import exception_view
 
 app_name = 'panel'
 urlpatterns = [
     re_path(r'^out-pin/(\w*)$', OutPinView.as_view()),
     re_path(r'^main-power/(\w*)$', MainPowerView.as_view()),
+    path('exception/', exception_view),
 ]

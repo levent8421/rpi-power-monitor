@@ -37,4 +37,5 @@ def write_value(pin, value):
     else:
         GPIO.output(pin, GPIO.LOW)
 
+
 setup()
